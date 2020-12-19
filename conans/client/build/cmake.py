@@ -175,6 +175,14 @@ class CMakeBuildHelper(object):
 
     @property
     def flags(self):
+        # convert boolean type to 'ON' or 'OFF' which are default boolean value in CMake.
+        for k, v in self.definitions.items():
+            if not isinstance(v, str):
+                if v.value == 'False':
+                    self.definitions[k] = 'OFF'
+                elif v.value == 'True':
+                    self.definitions[k] = 'ON'
+
         return defs_to_string(self.definitions)
 
     @property
